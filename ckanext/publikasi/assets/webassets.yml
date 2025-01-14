@@ -1,0 +1,14 @@
+# publikasi-js:
+#   filter: rjsmin
+#   output: ckanext-publikasi/%(version)s-publikasi.js
+#   contents:
+#     - js/publikasi.js
+#   extra:
+#     preload:
+#       - base/main
+
+# publikasi-css:
+#   filter: cssrewrite
+#   output: ckanext-publikasi/%(version)s-publikasi.css
+#   contents:
+#     - css/publikasi.css

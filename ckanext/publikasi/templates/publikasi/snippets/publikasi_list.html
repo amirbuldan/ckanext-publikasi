@@ -1,0 +1,53 @@
+{# 
+
+Display a grid of publikasi items.
+
+data - A list of publikasi.
+
+Example:
+
+    {% snippet "publikasi/snippets/publikasi_list.html" %}
+
+#}
+{% block publikasi_list %}
+<div class="{{ list_class or 'dataset-list list-unstyled' }}">
+    {% block publikasi_list_inner %}
+        {% for publikasi in data %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <!-- <img class="media-object" src="https://placehold.co/80x80/png" alt="..."> -->
+                            <img class="media-object" src="/images/placeholder_file.svg" alt="..." height="100" width="100">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="{{ url_for('publikasi.get', id=publikasi.id) }}">
+                            {{ publikasi.title}}
+                            </a>
+                        </h4>
+                        <p>{{ publikasi.description }}</p>
+                        <small>
+                            <span class="glyphicon glyphicon-calendar"></span> {{ publikasi.created }}
+                        </small>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        {% endfor %}
+    {% endblock %}
+</div>
+    
+{% endblock %}
+
+{% block add_scripts %}
+
+  <script>
+    console.log('test 123')
+    
+  </script>
+  
+{% endblock %}

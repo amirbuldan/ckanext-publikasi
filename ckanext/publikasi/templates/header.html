@@ -1,0 +1,14 @@
+{% ckan_extends %}
+
+{% block header_site_navigation_tabs %}
+    {{ super() }}
+    <li role="presentation" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Publikasi <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a href="{{ url_for('publikasi.index' )}}">Publikasi Sektoral</a></li>
+            <li><a href="#">Produk Hukum</a></li>
+        </ul>
+    </li>      
+{% endblock %}

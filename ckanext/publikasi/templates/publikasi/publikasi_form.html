@@ -1,0 +1,67 @@
+{% import 'macros/form.html' as Form %}
+{% extends 'page.html' %}
+{% set mode = 'create' %}
+
+{% block breadcrumb_content %}
+    li.active
+{% endblock %}
+
+{% block content_action %}
+    {% if mode=='edit' %}
+        {% link_for _('View'), named_route='metadata.get', id=metadata.id, class_='btn btn-default', icon='eye' %}
+    {% endif %}
+{% endblock %}
+
+{% block content_primary_nav %}
+    {% if mode=='edit' %}
+        {{ h.build_nav_icon('publikasi.edit', _('Edit Publikasi'), id=publikasi.id, icon='') }}
+    {% else %}
+        {{ h.build_nav_icon('publikasi.create', _('Form Publikasi'), icon='plus') }}
+    {% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+    
+    <form action="" method="post" class="form">
+        {{ Form.input('title', label="Title", placeholder='title...', is_required=true)}}
+
+        {{ Form.markdown('description', label="Deskripsi", placeholder="description ...")}}
+
+        {{ Form.input('author', label='Author') }}
+
+        <div class="row">
+            <div class="col-md-5">
+                <p><i>Display cover here</i></p>
+
+                <p>upload file here</p>
+
+            </div>
+            <div class="col-md-7">
+                {{ Form.input('catalog_number', label="Nomor Katalog") }}
+
+                {{ Form.input('publication_number', label='Nomor Publikasi') }}
+
+                {{ Form.input('isbn_issn', label='ISBN / ISSN') }}
+
+                {{ Form.input('release_frequency', label='Frekuensi Rilis')}}
+
+                {{ Form.input('release_date', label='Tanggal Rilis') }}
+
+                {{ Form.input('language', label='Bahasa') }}
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary pull-right" value="submit">{{ _('Save') }}</button>
+            </div>
+        </div>
+
+        
+
+    </form>
+
+
+{% endblock %}
