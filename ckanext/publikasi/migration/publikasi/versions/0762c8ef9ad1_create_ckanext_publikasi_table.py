@@ -27,15 +27,16 @@ def upgrade():
             sa.Column("id", sa.Integer, primary_key=True),
             sa.Column("unique_id", sa.UnicodeText, unique=True), # UUID dan Unique
             sa.Column("title", sa.UnicodeText),
-            sa.Column("desciption", sa.UnicodeText, default=""),
+            sa.Column("description", sa.UnicodeText, default=""),
             sa.Column("author", sa.UnicodeText, default=""),
+            sa.Column("type", sa.UnicodeText, default=""),
             sa.Column("file_path", sa.UnicodeText, default=""),
             sa.Column("user_own", sa.UnicodeText, default=""), # User yang membuat record
             sa.Column("cover_image", sa.UnicodeText, nullable=True), # Cover image text / blob file
             sa.Column("meta_catalog_number", sa.String(50), nullable=True), # JSON metadata berkas
             sa.Column("meta_publication_number", sa.String(50), nullable=True), # JSON metadata berkas
             sa.Column("meta_isbn_issn", sa.String(50), nullable=True), # JSON metadata berkas
-            sa.Column("meta_release_freqency", sa.String(50), nullable=True), # JSON metadata berkas
+            sa.Column("meta_release_frequency", sa.String(50), nullable=True), # JSON metadata berkas
             sa.Column("meta_release_date", sa.DateTime), # JSON metadata berkas
             sa.Column("meta_language", sa.String(50), nullable=True), # JSON metadata berkas
             sa.Column("meta_file_size", sa.BigInteger, nullable=True), # JSON metadata berkas

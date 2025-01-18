@@ -1,0 +1,83 @@
+{% extends 'page.html' %}
+
+{% set data = response.data %}
+
+{% block page_primary_action %}
+{% endblock %}
+
+{% block breadcrumb_content %}
+    li.active
+{% endblock %}
+
+{% block content_action %}
+    {% link_for _('Manage'), named_route='publikasi.edit', id=data.id, class_='btn btn-default', icon='wrench' %}
+{% endblock %}
+{% block content_primary_nav %}
+  {{ h.build_nav_icon('publikasi.get', _('Publikasi'), id=data.id, icon='') }}
+{% endblock %}
+<!-- <div>
+    <a href="{{ url_for('metadata.edit', id=data.id)}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-wrench"></span> Manage
+    </a> 
+</div> -->
+
+{% block primary_content_inner %}
+
+<h3 class="display-3">{{ data.title }}</h3>
+<p>{{ data.description }}</p>
+
+<table class="table">
+    <tr>
+        <th>Nomor Katalog</th>
+        <td>:</td>
+        <td>{{ data.meta_catalog_number }}</td>
+    </tr>
+    <tr>
+        <th>Nomor Publikasi</th>
+        <td>:</td>
+        <td>{{ data.meta_publication_number }}</td>
+    </tr>
+    <tr>
+        <th>ISBN/ISSN</th>
+        <td>:</td>
+        <td>{{ data.meta_isbn_issn }}</td>
+    </tr>
+    <tr>
+        <th>Frekuensi Terbit</th>
+        <td>:</td>
+        <td>{{ data.meta_release_frequency }}</td>
+    </tr>
+    <tr>
+        <th>Tanggal Rilis</th>
+        <td>:</td>
+        <td>{{ data.meta_release_date }}</td>
+    </tr>
+    <tr>
+        <th>Bahasa</th>
+        <td>:</td>
+        <td>{{ data.meta_language }}</td>
+    </tr>
+    <tr>
+        <th>Ukuran File</th>
+        <td>:</td>
+        <td>{{ data.meta_file_size }}</td>
+    </tr>
+</table>
+
+
+{#
+<div class="well">
+    <strong>
+        Download <span class="glyphicon glyphicon-save-file"></span>
+    </strong>
+    <a href="{% url_for_static('/uploads/' + data.file_path) %}">{{ data.file_path }}</a>
+</div>
+
+<div>
+    <h3>Preview</h3>
+    <object data="{{ '/uploads/'+ data.file_path }}" frameborder="0" width="100%" height="800"></object>
+</div>
+
+#}
+    
+{% endblock %}

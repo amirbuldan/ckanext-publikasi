@@ -1,6 +1,12 @@
 {% import 'macros/form.html' as Form %}
 {% extends 'page.html' %}
-{% set mode = 'create' %}
+
+
+{% set mode = mode or 'create' %}
+{% if response['data'] %}
+    {% set publikasi = response['data'] %}
+{% endif %}
+    
 
 {% block breadcrumb_content %}
     li.active
@@ -8,7 +14,7 @@
 
 {% block content_action %}
     {% if mode=='edit' %}
-        {% link_for _('View'), named_route='metadata.get', id=metadata.id, class_='btn btn-default', icon='eye' %}
+        {% link_for _('View'), named_route='publikasi.get', id=publikasi.id, class_='btn btn-default', icon='eye' %}
     {% endif %}
 {% endblock %}
 
@@ -22,32 +28,45 @@
 
 {% block primary_content_inner %}
     
-    <form action="" method="post" class="form">
-        {{ Form.input('title', label="Title", placeholder='title...', is_required=true)}}
+mode : {{ mode|pprint }}
+    <form action="{{ url_for('publikasi.store')}}" method="post" class="form" enctype="multipart/form-data">
+        {{ Form.input('title', label="Title", placeholder='title...', is_required=true, value=publikasi.title)}}
 
-        {{ Form.markdown('description', label="Deskripsi", placeholder="description ...")}}
+        {{ Form.markdown('description', label="Deskripsi", placeholder="description ...", value=publikasi.description)}}
 
-        {{ Form.input('author', label='Author') }}
+        {{ Form.input('author', label='Author', value=publikasi.author) }}
+
+        <input type="hidden" name="type" value="Publikasi Sektoral">
 
         <div class="row">
             <div class="col-md-5">
                 <p><i>Display cover here</i></p>
 
                 <p>upload file here</p>
-
+                <div class="form-group">
+                    <label for="">Upload berkas publikasi</label>
+                    <input type="file" name="publication_file" id="field_publication_file" class="form-control">
+                </div>
             </div>
             <div class="col-md-7">
-                {{ Form.input('catalog_number', label="Nomor Katalog") }}
+                {{ Form.input('catalog_number', label="Nomor Katalog", value=publikasi.meta_catalog_number) }}
 
-                {{ Form.input('publication_number', label='Nomor Publikasi') }}
+                {{ Form.input('publication_number', label='Nomor Publikasi', value=publikasi.meta_publication_number) }}
 
-                {{ Form.input('isbn_issn', label='ISBN / ISSN') }}
+                {{ Form.input('isbn_issn', label='ISBN / ISSN', value=publikasi.meta_isbn_issn) }}
 
-                {{ Form.input('release_frequency', label='Frekuensi Rilis')}}
+                {{ Form.input('release_frequency', label='Frekuensi Rilis', value=publikasi.meta_release_frequency)}}
 
+                {# 
                 {{ Form.input('release_date', label='Tanggal Rilis') }}
+                #}
+                
+                <div class="form-group">
+                    <label for="">Tanggal Rilis</label>
+                    <input type="date" name="release_date" id="field_release_date" class="form-control">
+                </div>
 
-                {{ Form.input('language', label='Bahasa') }}
+                {{ Form.input('language', label='Bahasa', value=publikasi.meta_language)}}
 
             </div>
 
@@ -56,12 +75,18 @@
         <div class="row">
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary pull-right" value="submit">{{ _('Save') }}</button>
+
+                {#
+                <button type="submit" form="form_delete" class="btn btn-danger pull-left" data-module="confirm-form" data-module-content="{{ _('Are you sure?')}}">Delete</button>
+                #}
+                 {% if mode=='edit' %}
+                    <a href="{{ url_for('publikasi.delete', id=publikasi.id)}}" class="btn btn-danger pull-left" data-module="confirm-action" data-module-content="{{ _('Are you sure?')}}">Delete</a>
+                 {% endif %}
             </div>
         </div>
 
-        
-
     </form>
+    <form id="form_delete" action="{{ url_for('publikasi.delete', id=publikasi.id)}}" method="post"></form>
 
 
 {% endblock %}
