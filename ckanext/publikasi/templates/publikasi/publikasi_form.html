@@ -3,8 +3,10 @@
 
 
 {% set mode = mode or 'create' %}
-{% if response['data'] %}
+{% if response %}
     {% set publikasi = response['data'] %}
+{% else %}
+    {% set publikasi = {} %}
 {% endif %}
     
 
@@ -86,7 +88,6 @@ mode : {{ mode|pprint }}
         </div>
 
     </form>
-    <form id="form_delete" action="{{ url_for('publikasi.delete', id=publikasi.id)}}" method="post"></form>
 
 
 {% endblock %}
