@@ -24,6 +24,7 @@ def get_publikasi(context, data_dict):
         "description": publikasi_item.description,
         "author" : publikasi_item.author,
         "type": publikasi_item.type,
+        "file_path": publikasi_item.file_path,
         "user_own": publikasi_item.user_own,
         "cover_image": publikasi_item.cover_image,
         "meta_catalog_number": publikasi_item.meta_catalog_number,
@@ -55,6 +56,7 @@ def get_all_publikasi(context, data_dict):
             "description": publikasi_item.description,
             "author" : publikasi_item.author,
             "type": publikasi_item.type,
+            "file_path": publikasi_item.file_path,
             "user_own": publikasi_item.user_own,
             "cover_image": publikasi_item.cover_image,
             "meta_catalog_number": publikasi_item.meta_catalog_number,
@@ -78,10 +80,10 @@ def get_all_publikasi(context, data_dict):
 def create_publikasi(context, data_dict):
     ''' create new publikasi entry '''
 
-    # result_upload = _upload_file(data_dict['publication_file'])
+    result_upload = _upload_file(data_dict['publication_file'])
 
-    # if result_upload['status'] != 'success':
-    #     return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
+    if result_upload['issuccess'] != True:
+        return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
 
     publikasi = Publikasi(
         unique_id=uuid.uuid4(),
@@ -89,8 +91,8 @@ def create_publikasi(context, data_dict):
         description=data_dict['description'],
         author=data_dict['author'],
         type=data_dict['type'],
-        # file_path=result_upload['filename'],
-        file_path='',
+        file_path=result_upload['filename'],
+        # file_path='',
         user_own='',
         cover_image=data_dict['cover_image'],
         meta_catalog_number=data_dict['catalog_number'],

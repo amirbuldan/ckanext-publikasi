@@ -44,11 +44,21 @@ mode : {{ mode|pprint }}
             <div class="col-md-5">
                 <p><i>Display cover here</i></p>
 
+                {% block upload_file_field %}
+                {% set base_path = 'uploads/' %}
+                {% set current_file %}
+                    {% if publikasi %}
+                        current_file = base_path + publikasi.file_path
+                    {% else %}
+                        current_file = ''
+                    {% endif %}
+                {% endset %}
                 <p>upload file here</p>
                 <div class="form-group">
                     <label for="">Upload berkas publikasi</label>
-                    <input type="file" name="publication_file" id="field_publication_file" class="form-control">
+                    <input type="file" name="publication_file" id="field_publication_file" class="form-control" value="{{ current_file }}">
                 </div>
+                {% endblock %}
             </div>
             <div class="col-md-7">
                 {{ Form.input('catalog_number', label="Nomor Katalog", value=publikasi.meta_catalog_number) }}

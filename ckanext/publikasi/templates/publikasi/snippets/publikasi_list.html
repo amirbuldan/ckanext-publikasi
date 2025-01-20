@@ -29,7 +29,7 @@ Example:
                             {{ publikasi.title}}
                             </a>
                         </h4>
-                        <p>{{ publikasi.description }}</p>
+                        <p>{{ publikasi.description | truncate(150) }}</p>
                         <small>
                             <span class="glyphicon glyphicon-calendar"></span> {{ publikasi.created }}
                         </small>
