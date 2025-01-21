@@ -29,5 +29,6 @@ class PublikasiPlugin(plugins.SingletonPlugin):
             'publikasi_create': Actions.create_publikasi,
             'publikasi_get_all': Actions.get_all_publikasi,
             'publikasi_get': Actions.get_publikasi,
+            'publikasi_update': Actions.update_publikasi,
             'publikasi_delete': Actions.delete_publikasi
         }

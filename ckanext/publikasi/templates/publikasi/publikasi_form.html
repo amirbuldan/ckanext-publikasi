@@ -3,11 +3,23 @@
 
 
 {% set mode = mode or 'create' %}
+
 {% if response %}
     {% set publikasi = response['data'] %}
 {% else %}
     {% set publikasi = {} %}
 {% endif %}
+
+{% if mode == 'edit' %}
+    {% set url_action %}
+        {{ url_for('publikasi.update', id=publikasi.id) }}
+    {% endset %}
+{% else %}
+    {% set url_action %}
+        {{ url_for('publikasi.store') }}
+    {% endset %}
+{% endif %}
+
     
 
 {% block breadcrumb_content %}
@@ -31,7 +43,8 @@
 {% block primary_content_inner %}
     
 mode : {{ mode|pprint }}
-    <form action="{{ url_for('publikasi.store')}}" method="post" class="form" enctype="multipart/form-data">
+    <!-- <form action="{{ url_for('publikasi.store')}}" method="post" class="form" enctype="multipart/form-data"> -->
+    <form action="{{ url_action }}" method="post" class="form" enctype="multipart/form-data">
         {{ Form.input('title', label="Title", placeholder='title...', is_required=true, value=publikasi.title)}}
 
         {{ Form.markdown('description', label="Deskripsi", placeholder="description ...", value=publikasi.description)}}
@@ -56,7 +69,7 @@ mode : {{ mode|pprint }}
                 <p>upload file here</p>
                 <div class="form-group">
                     <label for="">Upload berkas publikasi</label>
-                    <input type="file" name="publication_file" id="field_publication_file" class="form-control" value="{{ current_file }}">
+                    <input type="file" name="publication_file" id="field_publication_file" class="form-control" value="{{ current_file }}" required>
                 </div>
                 {% endblock %}
             </div>

@@ -17,6 +17,10 @@ def get_publikasi(context, data_dict):
     if not publikasi_item:
         raise tk.ObjectNotFound('Metadata not found')
     
+    file_stat = _file_stat(publikasi_item.file_path)
+    print('file statistic : ', file_stat)
+    print(f"{_file_stat(publikasi_item.file_path).st_size/(1<<20):,.0f} MB")
+    
     return {
         "id": publikasi_item.id,
         "uuid": publikasi_item.unique_id,
@@ -111,7 +115,56 @@ def create_publikasi(context, data_dict):
     
 
 def update_publikasi(context, data_dict):
-    pass
+    ''' Update publikasi entry by ID'''
+
+    publikasi_id = data_dict['id']
+
+    result_upload = _upload_file(data_dict['publication_file'])
+
+    if result_upload['issuccess'] != True:
+        return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
+    
+    publikasi_updated = {
+        'title': data_dict['title'],
+        'description': data_dict['description'],
+        'author': data_dict['author'],
+        'type': data_dict['type'],
+        'file_path': result_upload['filename'],
+        'user_own': '',
+        'cover_image': data_dict['cover_image'],
+        'meta_catalog_number': data_dict['catalog_number'],
+        'meta_publication_number': data_dict['publication_number'],
+        'meta_isbn_issn': data_dict['isbn_issn'],
+        'meta_release_frequency': data_dict['release_frequency'],
+        'meta_release_date': data_dict['release_date'],
+        'meta_language': data_dict['release_date'],
+        'meta_file_size': 0
+    }
+
+    # publikasi = Publikasi(
+    #     title=data_dict['title'],
+    #     description=data_dict['description'],
+    #     author=data_dict['author'],
+    #     type=data_dict['type'],
+    #     file_path=result_upload['filename'],
+    #     # file_path='',
+    #     user_own='',
+    #     cover_image=data_dict['cover_image'],
+    #     meta_catalog_number=data_dict['catalog_number'],
+    #     meta_publication_number=data_dict['publication_number'],
+    #     meta_isbn_issn=data_dict['isbn_issn'],
+    #     meta_release_frequency=data_dict['release_frequency'],
+    #     meta_release_date=data_dict['release_date'],
+    #     meta_language=data_dict['language'],
+    #     meta_file_size=0
+    # )
+
+    Session.query(Publikasi).filter(Publikasi.id==publikasi_id). \
+        update(publikasi_updated)
+    # Session.add(publikasi)
+    Session.commit()
+
+    return {'issuccess': True, 'msg': 'Publikasi updated successfully'}
 
 def delete_publikasi(context, data_dict):
     ''' Delete Publikasi by ID '''
@@ -164,3 +217,6 @@ def _delete_file(filename):
         print('Error : Something wrong!')
         return False
     return True
+
+def _file_stat(filename):
+    return os.stat(os.path.join(BASE_PATH, UPLOAD_FOLDER, filename))

@@ -56,6 +56,34 @@ def edit(id):
 
     return render_template('publikasi/publikasi_form.html', mode='edit', response={'data': publikasi})
 
+def update(id):
+    data_form = request.form
+    print(data_form)
+
+    data_publikasi = {
+        'id': id,
+        'title': data_form.get('title'),
+        'description': data_form.get('description'),
+        'author': data_form.get('author'),
+        'type' : data_form.get('type'),
+        'cover_image': data_form.get('cover_image'),
+        'publication_file': request.files['publication_file'],
+        'catalog_number': data_form.get('catalog_number'),
+        'publication_number': data_form.get('publication_number'),
+        'isbn_issn': data_form.get('isbn_issn'),
+        'release_frequency': data_form.get('release_frequency'),
+        'release_date': data_form.get('release_date'),
+        'language': data_form.get('language'),
+    }
+
+    publikasi_instance = tk.get_action('publikasi_update')(context={}, data_dict=data_publikasi)
+    print('publikasi instance : {}'.format(publikasi_instance))
+
+    # return jsonify({'data': publikasi_instance['publikasi']})
+
+    return tk.redirect_to('publikasi.get', id=id)
+
+
 def delete(id):
 
     tk.get_action('publikasi_delete')(context={}, data_dict={'id': id})
@@ -77,6 +105,9 @@ bp.add_url_rule(
 )
 bp.add_url_rule(
     '/edit/<int:id>', endpoint='edit', view_func=edit
+)
+bp.add_url_rule(
+    '/update/<int:id>', endpoint='update', view_func=update, methods=['POST']
 )
 bp.add_url_rule(
     '/delete/<int:id>', endpoint='delete', view_func=delete, methods=['POST']
