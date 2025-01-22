@@ -88,7 +88,7 @@ mode : {{ mode|pprint }}
                 
                 <div class="form-group">
                     <label for="">Tanggal Rilis</label>
-                    <input type="date" name="release_date" id="field_release_date" class="form-control">
+                    <input type="date" name="release_date" id="field_release_date" value="{% if publikasi.meta_release_date %}{{ h.datetime_field_format(publikasi.meta_release_date) }}{% endif %}" class="form-control">
                 </div>
 
                 {{ Form.input('language', label='Bahasa', value=publikasi.meta_language)}}

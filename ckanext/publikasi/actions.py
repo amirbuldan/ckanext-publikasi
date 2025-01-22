@@ -137,7 +137,7 @@ def update_publikasi(context, data_dict):
         'meta_isbn_issn': data_dict['isbn_issn'],
         'meta_release_frequency': data_dict['release_frequency'],
         'meta_release_date': data_dict['release_date'],
-        'meta_language': data_dict['release_date'],
+        'meta_language': data_dict['language'],
         'meta_file_size': 0
     }
 
@@ -179,6 +179,7 @@ def delete_publikasi(context, data_dict):
     Session.commit()
 
     return { 'issuccess': True, 'msg': 'Publikasi deleted successfully' }
+
 
 def _upload_file(file):
     ''' 

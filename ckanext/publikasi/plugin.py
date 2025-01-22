@@ -6,12 +6,14 @@ import ckanext.publikasi.views2 as views_produk_hukum
 import ckanext.publikasi.auths as Auth
 
 import ckanext.publikasi.actions as Actions
+import ckanext.publikasi.helpers as Helpers
 
 class PublikasiPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.IAuthFunctions)
+    plugins.implements(plugins.ITemplateHelpers)
 
     # IConfigurer
 
@@ -39,3 +41,10 @@ class PublikasiPlugin(plugins.SingletonPlugin):
     #IAuthFunctions
     def get_auth_functions(self):
         return {'publikasi_create': Auth.publikasi_create}
+    
+    #ITemplateHelpers
+    def get_helpers(self):
+        return {
+            'string_datetime': Helpers.string_datetime,
+            'datetime_field_format': Helpers.datetime_field_format
+        }

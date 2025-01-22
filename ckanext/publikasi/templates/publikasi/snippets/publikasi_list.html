@@ -31,7 +31,7 @@ Example:
                         </h4>
                         <p>{{ publikasi.description | truncate(150) }}</p>
                         <small>
-                            <span class="glyphicon glyphicon-calendar"></span> {{ publikasi.created }}
+                            <span class="glyphicon glyphicon-calendar"></span> {{ h.string_datetime(publikasi.created) }}
                         </small>
                     </div>
                 </div> 
