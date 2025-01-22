@@ -1,11 +1,14 @@
 from flask import (Blueprint, render_template, jsonify, request, url_for)
 import ckan.plugins.toolkit as tk
 
+PUBLIKASI_TYPE = ['publikasi sektoral', 'produk hukum']
+
 bp = Blueprint(
     "publikasi",
     __name__,
     url_prefix="/publikasi"
 )
+
 
 def index():
     # dummy_publikasi = [
@@ -13,10 +16,15 @@ def index():
     #     {'id': 234, 'title': 'contoh publikasi 02', 'description': 'deskripsi publikasi 002', 'created': 'tgl 5'} 
     # ]
 
+    # if t not in PUBLIKASI_TYPE:
+    #     return {'status': 'Not Found'}, 404
+
     data_publikasi = tk.get_action('publikasi_get_all')(context={}, data_dict={})
     return render_template('publikasi/index.html', response={'data': data_publikasi['data']})
 
 def create():
+    # if t not in PUBLIKASI_TYPE: 
+    #     return 404
     return render_template('publikasi/publikasi_form.html')
 
 def store():

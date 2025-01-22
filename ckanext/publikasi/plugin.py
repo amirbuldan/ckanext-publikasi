@@ -2,6 +2,8 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 import ckanext.publikasi.views as views
+import ckanext.publikasi.views2 as views_produk_hukum
+import ckanext.publikasi.auths as Auth
 
 import ckanext.publikasi.actions as Actions
 
@@ -9,6 +11,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IBlueprint)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.IAuthFunctions)
 
     # IConfigurer
 
@@ -21,7 +24,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
 
     # IBlueprint
     def get_blueprint(self):
-        return views.get_blueprints()
+        return views.get_blueprints() + views_produk_hukum.get_blueprints()
 
     # IActions
     def get_actions(self):
@@ -32,3 +35,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
             'publikasi_update': Actions.update_publikasi,
             'publikasi_delete': Actions.delete_publikasi
         }
+    
+    #IAuthFunctions
+    def get_auth_functions(self):
+        return {'publikasi_create': Auth.publikasi_create}
