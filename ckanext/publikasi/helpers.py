@@ -27,3 +27,6 @@ def string_datetime(dt):
 
 def datetime_field_format(dt):
     return dt.strftime("%Y-%m-%d")
+
+def display_size_in_mb(byte_size):
+    return f"{byte_size/(1<<20):,.0f} MB"

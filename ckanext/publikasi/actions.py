@@ -20,6 +20,8 @@ def get_publikasi(context, data_dict):
     file_stat = _file_stat(publikasi_item.file_path)
     print('file statistic : ', file_stat)
     print(f"{_file_stat(publikasi_item.file_path).st_size/(1<<20):,.0f} MB")
+    print(f"ukuran file : {_get_file_size(publikasi_item.file_path)}")
+    print(f"ukuran file : { file_stat.st_size }")
     
     return {
         "id": publikasi_item.id,
@@ -38,6 +40,7 @@ def get_publikasi(context, data_dict):
         "meta_release_frequency": publikasi_item.meta_release_frequency,
         "meta_release_date": publikasi_item.meta_release_date,
         "meta_language": publikasi_item.meta_language,
+        "meta_file_size": publikasi_item.meta_file_size,
         "created": publikasi_item.created
     }
 
@@ -71,6 +74,7 @@ def get_all_publikasi(context, data_dict):
             "meta_release_frequency": publikasi_item.meta_release_frequency,
             "meta_release_date": publikasi_item.meta_release_date,
             "meta_language": publikasi_item.meta_language,
+            "meta_file_size": publikasi_item.meta_file_size,
             "created": publikasi_item.created
         })
     
@@ -107,7 +111,7 @@ def create_publikasi(context, data_dict):
         meta_release_frequency=data_dict['release_frequency'],
         meta_release_date=data_dict['release_date'],
         meta_language=data_dict['language'],
-        meta_file_size=0
+        meta_file_size=_get_file_size(result_upload['filename'])
     )
 
     Session.add(publikasi)
@@ -140,7 +144,7 @@ def update_publikasi(context, data_dict):
         'meta_release_frequency': data_dict['release_frequency'],
         'meta_release_date': data_dict['release_date'],
         'meta_language': data_dict['language'],
-        'meta_file_size': 0
+        'meta_file_size': _get_file_size(result_upload['filename'])
     }
 
     # publikasi = Publikasi(
@@ -222,4 +226,11 @@ def _delete_file(filename):
     return True
 
 def _file_stat(filename):
+    # file_path = os.stat(os.path.join(BASE_PATH, UPLOAD_FOLDER, filename))
+    # file_size = f"{file_path.st_size/(1<<20):,.0f} MB"
+    # return file_size
     return os.stat(os.path.join(BASE_PATH, UPLOAD_FOLDER, filename))
+
+def _get_file_size(filename):
+    ''' return file size in byte '''
+    return os.stat(os.path.join(BASE_PATH, UPLOAD_FOLDER, filename)).st_size
