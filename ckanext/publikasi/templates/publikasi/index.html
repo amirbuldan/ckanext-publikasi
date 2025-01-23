@@ -3,7 +3,8 @@
 {% block subtitle %}Publikasi{% endblock %}
 
 {% block breadcrumb_content %}
-    li.active
+    {{ super() }}
+    <li>{% link_for _('Publikasi'), named_route='publikasi.index' %}</li>
 {% endblock %}
 
 {% block page_header %}{% endblock %}

@@ -23,7 +23,8 @@
     
 
 {% block breadcrumb_content %}
-    li.active
+    {{ super() }}
+    <li class="active"><a href="">{{ h.dataset_display_name('publikasi') }}</a></li>
 {% endblock %}
 
 {% block content_action %}

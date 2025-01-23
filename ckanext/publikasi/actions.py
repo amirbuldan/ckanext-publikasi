@@ -24,6 +24,7 @@ def get_publikasi(context, data_dict):
     return {
         "id": publikasi_item.id,
         "uuid": publikasi_item.unique_id,
+        "name": publikasi_item.title, # tambahan untuk kebutuhan helper breadcrumb
         "title": publikasi_item.title,
         "description": publikasi_item.description,
         "author" : publikasi_item.author,
@@ -56,6 +57,7 @@ def get_all_publikasi(context, data_dict):
         publikasi_obj.append({
             "id": publikasi_item.id,
             "uuid": publikasi_item.unique_id,
+            "name": publikasi_item.title, # tambahan untuk kebutuhan helper breadcrumb
             "title": publikasi_item.title,
             "description": publikasi_item.description,
             "author" : publikasi_item.author,

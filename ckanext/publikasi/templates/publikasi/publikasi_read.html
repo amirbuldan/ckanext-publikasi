@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block breadcrumb_content %}
-    li.active
+    {{ super() }}
+    <li>{% link_for _('Publikasi'), named_route='publikasi.index' %}</li>
+    <li class="active"><a href="">{{ h.resource_display_name(data) }}</a></li>
 {% endblock %}
 
 {% block content_action %}
