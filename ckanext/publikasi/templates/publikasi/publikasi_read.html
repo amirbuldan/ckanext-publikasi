@@ -12,7 +12,9 @@
 {% endblock %}
 
 {% block content_action %}
-    {% link_for _('Manage'), named_route='publikasi.edit', id=data.id, class_='btn btn-default', icon='wrench' %}
+    {% if h.check_access('publikasi_create') %}
+        {% link_for _('Manage'), named_route='publikasi.edit', id=data.id, class_='btn btn-default', icon='wrench' %}
+    {% endif %}
 {% endblock %}
 {% block content_primary_nav %}
   {{ h.build_nav_icon('publikasi.get', _('Publikasi'), id=data.id, icon='') }}
@@ -40,7 +42,7 @@
     </div>
     <div class="col-md-8">
         <p><b>Abstraksi</b></p>
-        <p>{{ data.description }}</p>
+        <p>{{ h.markdown_extract(data.description) }}</p>
         <table class="table table-condensed">
             <tr>
                 <th width="30%">Nomor Katalog</th>
