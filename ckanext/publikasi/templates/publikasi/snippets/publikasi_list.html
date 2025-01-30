@@ -18,9 +18,16 @@ Example:
                 
                 <div class="media">
                     <div class="media-left">
+                        {%- set cover_img_src -%}
+                            {% if publikasi.cover_image %}
+                                {{- '/uploads/'+ publikasi.cover_image -}}
+                            {% else %}
+                                {{- '/images/placeholder_publikasi_file.jpg' -}}
+                            {% endif %}
+                        {%- endset -%}
                         <a href="#">
                             <!-- <img class="media-object" src="https://placehold.co/80x80/png" alt="..."> -->
-                            <img class="media-object" src="/images/placeholder_file.svg" alt="..." height="100" width="100">
+                            <img class="media-object img-rounded" src="{{ cover_img_src }}" alt="..." height="100" width="100" style="object-fit: cover;">
                         </a>
                     </div>
                     <div class="media-body">

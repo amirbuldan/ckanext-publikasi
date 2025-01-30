@@ -20,11 +20,11 @@
     {% endset %}
 {% endif %}
 
-    
 
 {% block breadcrumb_content %}
     {{ super() }}
-    <li class="active"><a href="">{{ h.dataset_display_name('publikasi') }}</a></li>
+    <li>{% link_for _('Publikasi'), named_route='publikasi.index' %}</li>
+    <li class="active"><a href="">Form Publikasi</a></li>
 {% endblock %}
 
 {% block content_action %}
@@ -56,7 +56,6 @@ mode : {{ mode|pprint }}
 
         <div class="row">
             <div class="col-md-5">
-                <p><i>Display cover here</i></p>
 
                 {% block upload_file_field %}
                 {% set base_path = 'uploads/' %}
@@ -67,11 +66,32 @@ mode : {{ mode|pprint }}
                         current_file = ''
                     {% endif %}
                 {% endset %}
-                <p>upload file here</p>
+                <!-- <p>upload file here</p> -->
                 <div class="form-group">
                     <label for="">Upload berkas publikasi</label>
                     <input type="file" name="publication_file" id="field_publication_file" class="form-control" value="{{ current_file }}" required>
                 </div>
+                {% endblock %}
+
+                <p><i>Display cover here</i></p>
+                {% block field_upload_cover %}
+                    <div class="cover-container">
+                        <!-- <picture width="100%" height="400px"> -->
+                        {%- set cover_img_src -%}
+                            {% if publikasi.cover_image %}
+                                {{- '/uploads/'+ publikasi.cover_image -}}
+                            {% else %}
+                                {{- '/images/placeholder_publikasi_file.jpg' -}}
+                            {% endif %}
+                        {%- endset -%}
+                            <img id="imgPreviewContainer" src="{{ cover_img_src }}" alt="" width="100%" style="object-fit: cover; aspect-ratio: 2 / 3;" class="img-rounded">
+                        <!-- </picture> -->
+                    </div>
+
+                    <input type="file" name="cover_image" id="field_cover_image" 
+                        value="{{ publikasi.cover_image }}" class="form-control" 
+                        data-module="preview_image" accept=".jpg, .jpeg, .png" >
+                    
                 {% endblock %}
             </div>
             <div class="col-md-7">

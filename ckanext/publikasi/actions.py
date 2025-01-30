@@ -94,6 +94,11 @@ def create_publikasi(context, data_dict):
 
     if result_upload['issuccess'] != True:
         return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
+    
+    cover_image_upload = _upload_file(data_dict['cover_image'])
+    if cover_image_upload['issuccess'] != True:
+        cover_image_upload['filename'] = ''
+        # return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload cover'}
 
     publikasi = Publikasi(
         unique_id=uuid.uuid4(),
@@ -104,7 +109,8 @@ def create_publikasi(context, data_dict):
         file_path=result_upload['filename'],
         # file_path='',
         user_own='',
-        cover_image=data_dict['cover_image'],
+        # cover_image=data_dict['cover_image'],
+        cover_image=cover_image_upload['filename'],
         meta_catalog_number=data_dict['catalog_number'],
         meta_publication_number=data_dict['publication_number'],
         meta_isbn_issn=data_dict['isbn_issn'],
@@ -129,6 +135,11 @@ def update_publikasi(context, data_dict):
 
     if result_upload['issuccess'] != True:
         return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
+
+    cover_image_upload = _upload_file(data_dict['cover_image'])
+    if cover_image_upload['issuccess'] != True:
+        cover_image_upload['filename'] = ''
+        # return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload cover'}
     
     publikasi_updated = {
         'title': data_dict['title'],
@@ -137,7 +148,8 @@ def update_publikasi(context, data_dict):
         'type': data_dict['type'],
         'file_path': result_upload['filename'],
         'user_own': '',
-        'cover_image': data_dict['cover_image'],
+        # 'cover_image': data_dict['cover_image'],
+        'cover_image': cover_image_upload['filename'],
         'meta_catalog_number': data_dict['catalog_number'],
         'meta_publication_number': data_dict['publication_number'],
         'meta_isbn_issn': data_dict['isbn_issn'],
@@ -181,6 +193,9 @@ def delete_publikasi(context, data_dict):
         raise tk.ObjectNotFound('Publikasi Not Found')
 
     _delete_file(publikasi.file_path)
+    if publikasi.cover_image != '':
+        _delete_file(publikasi.cover_image)
+
     Session.delete(publikasi)
     Session.commit()
 

@@ -12,3 +12,9 @@
 #   output: ckanext-publikasi/%(version)s-publikasi.css
 #   contents:
 #     - css/publikasi.css
+
+publikasi-preview-image:
+  filter: rjsmin
+  output: ckanext-publikasi/%(version)s-publikasi-preview-image.js
+  contents:
+    - js/preview_image.js

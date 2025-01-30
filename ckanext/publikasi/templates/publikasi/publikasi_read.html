@@ -33,7 +33,14 @@
     <div class="col-md-4">
         <div class="cover-container">
             <!-- <picture width="100%" height="400px"> -->
-                <img src="/images/placeholder_publikasi_file.jpg" alt="" width="100%" style="object-fit: cover; aspect-ratio: 2 / 3" class="img-rounded">
+                {%- set cover_img_src -%}
+                    {% if data.cover_image %}
+                        {{- '/uploads/'+data.cover_image -}}
+                    {% else %}
+                        {{- '/images/placeholder_publikasi_file.jpg' -}}
+                    {% endif %}
+                {%- endset -%}
+                <img src="{{ cover_img_src }}" alt="" width="100%" style="object-fit: cover; aspect-ratio: 2 / 3" class="img-rounded">
             <!-- </picture> -->
         </div>
         <div>&nbsp;</div>
