@@ -73,9 +73,19 @@ mode : {{ mode|pprint }}
                 </div>
                 {% endblock %}
 
-                <p><i>Display cover here</i></p>
                 {% block field_upload_cover %}
-                    <div class="cover-container">
+                    <!-- <div class="mt-5">
+                        <h1 class="text-center mb-4">Upload Cover Image</h1>
+                        <div class="text-center">
+                            <div class="upload-container">
+                                <img src="" alt="Image Preview">
+                                <div class="upload-button">Click to Upload</div>
+                                <input type="file" id="imageInput" class="form-control" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="cover-container mt-5">
                         <!-- <picture width="100%" height="400px"> -->
                         {%- set cover_img_src -%}
                             {% if publikasi.cover_image %}
@@ -84,13 +94,19 @@ mode : {{ mode|pprint }}
                                 {{- '/images/placeholder_publikasi_file.jpg' -}}
                             {% endif %}
                         {%- endset -%}
-                            <img id="imgPreviewContainer" src="{{ cover_img_src }}" alt="" width="100%" style="object-fit: cover; aspect-ratio: 2 / 3;" class="img-rounded">
                         <!-- </picture> -->
+                        <h3 class="text-center mb-4">Cover Image</h3>
+                        <div class="text-center">
+                            <div class="upload-container">
+                                <img id="imgPreviewContainer" src="{{ cover_img_src }}" alt="Image Preview">
+                                <div class="upload-button">Click to Upload</div>
+                                <input type="file" class="form-control"  name="cover_image"
+                                    id="field_cover_image" data-module="preview_image" value="{{ publikasi.cover_image }}"
+                                    accept=".jpg, .jpeg, .png, .svg"
+                                    style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
+                            </div>
+                        </div>
                     </div>
-
-                    <input type="file" name="cover_image" id="field_cover_image" 
-                        value="{{ publikasi.cover_image }}" class="form-control" 
-                        data-module="preview_image" accept=".jpg, .jpeg, .png" >
                     
                 {% endblock %}
             </div>

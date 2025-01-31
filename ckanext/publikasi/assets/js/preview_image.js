@@ -22,6 +22,7 @@ ckan.module('preview_image', function($) {
 
                 fileReader.onload = event => {
                     imgContainer.setAttribute('src', event.target.result);
+                    // imgContainer.style.display = 'block';
                 }
 
                 fileReader.readAsDataURL(files[0])

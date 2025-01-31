@@ -1,5 +1,10 @@
 {% ckan_extends %}
 
+{% block styles %}
+    {{ super() }}
+    {% asset 'publikasi/publikasi-preview-image-css' %}
+{% endblock %}
+
 {% block scripts %}
     {{ super() }}
     {% asset 'publikasi/publikasi-preview-image' %}

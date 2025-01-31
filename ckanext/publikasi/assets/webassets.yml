@@ -13,6 +13,12 @@
 #   contents:
 #     - css/publikasi.css
 
+publikasi-preview-image-css:
+  filter: cssrewrite
+  output: ckanext-publikasi/%(version)s-publikasi-preview-image.css
+  contents:
+    - css/preview_image.css
+
 publikasi-preview-image:
   filter: rjsmin
   output: ckanext-publikasi/%(version)s-publikasi-preview-image.js
