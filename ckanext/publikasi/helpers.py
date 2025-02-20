@@ -1,4 +1,5 @@
 from datetime import datetime
+import ckan.plugins.toolkit as toolkit
 
 READABLE_MONTH = [
     ('01', 'Januari'),
@@ -30,3 +31,24 @@ def datetime_field_format(dt):
 
 def display_size_in_mb(byte_size):
     return f"{byte_size/(1<<20):,.0f} MB"
+
+def publikasi_list():
+    ''' Return newest publication '''
+
+    publikasi = toolkit.get_action('publikasi_list')(data_dict={'sort': 'created desc'})
+
+    # print('publikasi list helper', publikasi)
+    return publikasi
+
+def dataset_list():
+    ''' Return Dataset List '''
+
+    dataset_list = []
+    datasets = toolkit.get_action('package_list')(context={}, data_dict={'limit': 5})
+    for dt in datasets:
+        dataset_meta = toolkit.get_action('package_show')(context={}, data_dict={'id': dt})
+        dataset_list.append(dataset_meta)
+
+    print('get action dataset : ', datasets)
+    print('get action dataset show : ', dataset_list)
+    return dataset_list

@@ -1,0 +1,153 @@
+{% import 'macros/form.html' as Form %}
+{% extends 'page.html' %}
+
+
+{% set mode = mode or 'create' %}
+
+{% if response %}
+    {% set publikasi = response['data'] %}
+{% else %}
+    {% set publikasi = {} %}
+{% endif %}
+
+{% if mode == 'edit' %}
+    {% set url_action %}
+        {{ url_for('produk_hukum.update', id=publikasi.id) }}
+    {% endset %}
+{% else %}
+    {% set url_action %}
+        {{ url_for('produk_hukum.store') }}
+    {% endset %}
+{% endif %}
+
+
+{% block breadcrumb_content %}
+    {{ super() }}
+    <li>{% link_for _('Produk Hukum'), named_route='produk_hukum.index' %}</li>
+    <li class="active"><a href="">Form Produk Hukum</a></li>
+{% endblock %}
+
+{% block content_action %}
+    {% if mode=='edit' %}
+        {% link_for _('View'), named_route='produk_hukum.get', id=publikasi.id, class_='btn btn-default', icon='eye' %}
+    {% endif %}
+{% endblock %}
+
+{% block content_primary_nav %}
+    {% if mode=='edit' %}
+        {{ h.build_nav_icon('produk_hukum.edit', _('Edit Produk Hukum'), id=publikasi.id, icon='') }}
+    {% else %}
+        {{ h.build_nav_icon('produk_hukum.create', _('Form Produk Hukum'), icon='plus') }}
+    {% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+    
+mode : {{ mode|pprint }}
+    <!-- <form action="{{ url_for('publikasi.store')}}" method="post" class="form" enctype="multipart/form-data"> -->
+    <form action="{{ url_action }}" method="post" class="form" enctype="multipart/form-data">
+        {{ Form.input('title', label="Title", placeholder='title...', is_required=true, value=publikasi.title)}}
+
+        {{ Form.markdown('description', label="Deskripsi", placeholder="description ...", value=publikasi.description)}}
+
+        {{ Form.input('author', label='Author', value=publikasi.author) }}
+
+        <input type="hidden" name="type" value="Produk Hukum">
+
+        <div class="row">
+            <div class="col-md-5">
+
+                {% block upload_file_field %}
+                {% set base_path = 'uploads/' %}
+                {% set current_file %}
+                    {% if publikasi %}
+                        current_file = base_path + publikasi.file_path
+                    {% else %}
+                        current_file = ''
+                    {% endif %}
+                {% endset %}
+                <!-- <p>upload file here</p> -->
+                <div class="form-group">
+                    <label for="">Upload berkas publikasi</label>
+                    <input type="file" name="publication_file" id="field_publication_file" class="form-control" value="{{ current_file }}" required>
+                </div>
+                {% endblock %}
+
+                {% block field_upload_cover %}
+                    <!-- <div class="mt-5">
+                        <h1 class="text-center mb-4">Upload Cover Image</h1>
+                        <div class="text-center">
+                            <div class="upload-container">
+                                <img src="" alt="Image Preview">
+                                <div class="upload-button">Click to Upload</div>
+                                <input type="file" id="imageInput" class="form-control" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="cover-container mt-5">
+                        <!-- <picture width="100%" height="400px"> -->
+                        {%- set cover_img_src -%}
+                            {% if publikasi.cover_image %}
+                                {{- '/uploads/'+ publikasi.cover_image -}}
+                            {% else %}
+                                {{- '/images/placeholder_publikasi_file.jpg' -}}
+                            {% endif %}
+                        {%- endset -%}
+                        <!-- </picture> -->
+                        <h3 class="text-center mb-4">Cover Image</h3>
+                        <div class="text-center">
+                            <div class="upload-container">
+                                <img id="imgPreviewContainer" src="{{ cover_img_src }}" alt="Image Preview">
+                                <div class="upload-button">Click to Upload</div>
+                                <input type="file" class="form-control"  name="cover_image"
+                                    id="field_cover_image" data-module="preview_image" value="{{ publikasi.cover_image }}"
+                                    accept=".jpg, .jpeg, .png, .svg"
+                                    style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;">
+                            </div>
+                        </div>
+                    </div>
+                    
+                {% endblock %}
+            </div>
+            <div class="col-md-7">
+                {{ Form.input('catalog_number', label="Nomor Katalog", value=publikasi.meta_catalog_number) }}
+
+                {{ Form.input('publication_number', label='Nomor Publikasi', value=publikasi.meta_publication_number) }}
+
+                {{ Form.input('isbn_issn', label='ISBN / ISSN', value=publikasi.meta_isbn_issn) }}
+
+                {{ Form.input('release_frequency', label='Frekuensi Rilis', value=publikasi.meta_release_frequency)}}
+
+                {# 
+                {{ Form.input('release_date', label='Tanggal Rilis') }}
+                #}
+                
+                <div class="form-group">
+                    <label for="">Tanggal Rilis</label>
+                    <input type="date" name="release_date" id="field_release_date" value="{% if publikasi.meta_release_date %}{{ h.datetime_field_format(publikasi.meta_release_date) }}{% endif %}" class="form-control">
+                </div>
+
+                {{ Form.input('language', label='Bahasa', value=publikasi.meta_language)}}
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary pull-right" value="submit">{{ _('Save') }}</button>
+
+                {#
+                <button type="submit" form="form_delete" class="btn btn-danger pull-left" data-module="confirm-form" data-module-content="{{ _('Are you sure?')}}">Delete</button>
+                #}
+                 {% if mode=='edit' %}
+                    <a href="{{ url_for('produk_hukum.delete', id=publikasi.id)}}" class="btn btn-danger pull-left" data-module="confirm-action" data-module-content="{{ _('Are you sure?')}}">Delete</a>
+                 {% endif %}
+            </div>
+        </div>
+
+    </form>
+
+
+{% endblock %}

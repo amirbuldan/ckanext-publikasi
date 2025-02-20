@@ -2,7 +2,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 
 import ckanext.publikasi.views as views
-import ckanext.publikasi.views2 as views_produk_hukum
+import ckanext.publikasi.views_produk_hukum as views_produk_hukum
 import ckanext.publikasi.auths as Auth
 
 import ckanext.publikasi.actions as Actions
@@ -33,9 +33,11 @@ class PublikasiPlugin(plugins.SingletonPlugin):
         return {
             'publikasi_create': Actions.create_publikasi,
             'publikasi_get_all': Actions.get_all_publikasi,
+            'publikasi_list': Actions.publikasi_list,
             'publikasi_get': Actions.get_publikasi,
             'publikasi_update': Actions.update_publikasi,
-            'publikasi_delete': Actions.delete_publikasi
+            'publikasi_delete': Actions.delete_publikasi,
+            'produk_hukum_get_all': Actions.get_all_publikasi_produk_hukum
         }
     
     #IAuthFunctions
@@ -47,5 +49,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
         return {
             'string_datetime': Helpers.string_datetime,
             'datetime_field_format': Helpers.datetime_field_format,
-            'display_size_in_mb': Helpers.display_size_in_mb
+            'display_size_in_mb': Helpers.display_size_in_mb,
+            'get_latest_publikasi': Helpers.publikasi_list,
+            'dataset_list': Helpers.dataset_list
         }

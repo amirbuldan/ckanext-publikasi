@@ -1,0 +1,110 @@
+{% extends 'page.html' %}
+
+{% set data = response.data %}
+
+{% block page_primary_action %}
+{% endblock %}
+
+{% block breadcrumb_content %}
+    {{ super() }}
+    <li>{% link_for _('Produk Hukum'), named_route='produk_hukum.index' %}</li>
+    <li class="active"><a href="">{{ h.resource_display_name(data) }}</a></li>
+{% endblock %}
+
+{% block content_action %}
+    {% if h.check_access('publikasi_create') %}
+        {% link_for _('Manage'), named_route='produk_hukum.edit', id=data.id, class_='btn btn-default', icon='wrench' %}
+    {% endif %}
+{% endblock %}
+{% block content_primary_nav %}
+  {{ h.build_nav_icon('produk_hukum.get', _('Produk Hukum'), id=data.id, icon='') }}
+{% endblock %}
+<!-- <div>
+    <a href="{{ url_for('metadata.edit', id=data.id)}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-wrench"></span> Manage
+    </a> 
+</div> -->
+
+{% block primary_content_inner %}
+
+<h2 class="">{{ data.title }}</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="cover-container">
+            <!-- <picture width="100%" height="400px"> -->
+                {%- set cover_img_src -%}
+                    {% if data.cover_image %}
+                        {{- '/uploads/'+data.cover_image -}}
+                    {% else %}
+                        {{- '/images/placeholder_publikasi_file.jpg' -}}
+                    {% endif %}
+                {%- endset -%}
+                <img src="{{ cover_img_src }}" alt="" width="100%" style="object-fit: cover; aspect-ratio: 2 / 3" class="img-rounded">
+            <!-- </picture> -->
+        </div>
+        <div>&nbsp;</div>
+
+        <a href="{% url_for_static('/uploads/' + data.file_path) %}" target="_blank" class="btn btn-lg btn-info btn-block">Unduh Publikasi</a>
+    </div>
+    <div class="col-md-8">
+        <p><b>Abstraksi</b></p>
+        <p>{{ h.markdown_extract(data.description, extract_length=0) }}</p>
+        <table class="table table-condensed">
+            <tr>
+                <th width="30%">Nomor Katalog</th>
+                <td width="5%">:</td>
+                <td width="50%">{{ data.meta_catalog_number }}</td>
+            </tr>
+            <tr>
+                <th>Nomor Publikasi</th>
+                <td>:</td>
+                <td>{{ data.meta_publication_number }}</td>
+            </tr>
+            <tr>
+                <th>ISBN/ISSN</th>
+                <td>:</td>
+                <td>{{ data.meta_isbn_issn }}</td>
+            </tr>
+            <tr>
+                <th>Frekuensi Terbit</th>
+                <td>:</td>
+                <td>{{ data.meta_release_frequency }}</td>
+            </tr>
+            <tr>
+                <th>Tanggal Rilis</th>
+                <td>:</td>
+                <td>{{ h.string_datetime(data.meta_release_date) }}</td>
+            </tr>
+            <tr>
+                <th>Bahasa</th>
+                <td>:</td>
+                <td>{{ data.meta_language }}</td>
+            </tr>
+            <tr>
+                <th>Ukuran File</th>
+                <td>:</td>
+                <td>{{ h.display_size_in_mb(data.meta_file_size) }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+{#
+<div class="well">
+    <strong>
+        Download <span class="glyphicon glyphicon-save-file"></span>
+    </strong>
+    <a href="{% url_for_static('/uploads/' + data.file_path) %}">{{ data.file_path }}</a>
+</div>
+
+<div>
+    <h3>Preview</h3>
+    <object data="{{ '/uploads/'+ data.file_path }}" frameborder="0" width="100%" height="800"></object>
+</div>
+
+#}
+    
+{% endblock %}

@@ -1,0 +1,60 @@
+{# 
+
+Display a grid of publikasi items.
+
+data - A list of publikasi.
+
+Example:
+
+    {% snippet "publikasi/snippets/publikasi_list.html" %}
+
+#}
+{% block publikasi_list %}
+<div class="{{ list_class or 'dataset-list list-unstyled' }}">
+    {% block publikasi_list_inner %}
+        {% for publikasi in data %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                
+                <div class="media">
+                    <div class="media-left">
+                        {%- set cover_img_src -%}
+                            {% if publikasi.cover_image %}
+                                {{- '/uploads/'+ publikasi.cover_image -}}
+                            {% else %}
+                                {{- '/images/placeholder_publikasi_file.jpg' -}}
+                            {% endif %}
+                        {%- endset -%}
+                        <a href="#">
+                            <!-- <img class="media-object" src="https://placehold.co/80x80/png" alt="..."> -->
+                            <img class="media-object img-rounded" src="{{ cover_img_src }}" alt="..." height="100" width="100" style="object-fit: contain;">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="{{ url_for('produk_hukum.get', id=publikasi.id) }}">
+                            {{ publikasi.title}}
+                            </a>
+                        </h4>
+                        <p>{{ h.markdown_extract(publikasi.description | truncate(150)) }}</p>
+                        <small>
+                            <span class="glyphicon glyphicon-calendar"></span> {{ h.string_datetime(publikasi.created) }}
+                        </small>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        {% endfor %}
+    {% endblock %}
+</div>
+    
+{% endblock %}
+
+{% block add_scripts %}
+
+  <script>
+    console.log('test 123')
+    
+  </script>
+  
+{% endblock %}
