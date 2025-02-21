@@ -1,4 +1,4 @@
-import os, uuid
+import os, uuid, datetime
 import ckan.plugins.toolkit as tk
 from werkzeug.utils import secure_filename
 from sqlalchemy import text
@@ -18,11 +18,11 @@ def get_publikasi(context, data_dict):
     if not publikasi_item:
         raise tk.ObjectNotFound('Metadata not found')
     
-    file_stat = _file_stat(publikasi_item.file_path)
-    print('file statistic : ', file_stat)
-    print(f"{_file_stat(publikasi_item.file_path).st_size/(1<<20):,.0f} MB")
-    print(f"ukuran file : {_get_file_size(publikasi_item.file_path)}")
-    print(f"ukuran file : { file_stat.st_size }")
+    # file_stat = _file_stat(publikasi_item.file_path)
+    # print('file statistic : ', file_stat)
+    # print(f"{_file_stat(publikasi_item.file_path).st_size/(1<<20):,.0f} MB")
+    # print(f"ukuran file : {_get_file_size(publikasi_item.file_path)}")
+    # print(f"ukuran file : { file_stat.st_size }")
     
     return {
         "id": publikasi_item.id,
@@ -124,6 +124,7 @@ def publikasi_list(context={}, data_dict={}):
 def create_publikasi(context, data_dict):
     ''' create new publikasi entry '''
 
+
     result_upload = _upload_file(data_dict['publication_file'])
 
     if result_upload['issuccess'] != True:
@@ -169,6 +170,10 @@ def update_publikasi(context, data_dict):
 
     if result_upload['issuccess'] != True:
         return {'issuccess': False, 'msg': 'Terjadi kesalahan ketika upload berkas'}
+    
+    publikasi_item = Session.query(Publikasi).filter_by(id=data_dict['id']).first()
+    old_filename = publikasi_item.file_path
+    delete_old_file = _delete_file(old_filename)
 
     cover_image_upload = _upload_file(data_dict['cover_image'])
     if cover_image_upload['issuccess'] != True:
@@ -252,7 +257,9 @@ def _upload_file(file):
         return {'issuccess': False, 'msg': 'Gagal melakukan validasi berkas'}
         
     # Proses upload file
-    filename = secure_filename(file.filename)
+    # file_timestamp = datetime.date.today().strftime('%Y-%m-%d')
+    file_timestamp = str(datetime.datetime.timestamp(datetime.datetime.now()))
+    filename = secure_filename(file_timestamp + '_' + file.filename)
     file.save(os.path.join(BASE_PATH, UPLOAD_FOLDER, filename))
     return {'issuccess': True, 'filename': filename}
 

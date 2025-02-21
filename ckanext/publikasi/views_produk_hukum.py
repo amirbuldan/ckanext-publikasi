@@ -109,7 +109,7 @@ bp.add_url_rule(
     '/update/<int:id>', endpoint='update', view_func=update, methods=['POST']
 )
 bp.add_url_rule(
-    '/delete/<int:id>', endpoint='delete', view_func=delete, methods=['POST']
+    '/delete/<int:id>', endpoint='delete', view_func=delete, methods=['GET','POST']
 )
 
 
