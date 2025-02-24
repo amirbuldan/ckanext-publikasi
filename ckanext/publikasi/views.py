@@ -19,7 +19,7 @@ def index():
     # if t not in PUBLIKASI_TYPE:
     #     return {'status': 'Not Found'}, 404
 
-    data_publikasi = tk.get_action('publikasi_get_all')(context={}, data_dict={})
+    data_publikasi = tk.get_action('publikasi_sektoral_get_all')(context={}, data_dict={})
     return render_template('publikasi/index.html', response={'data': data_publikasi['data']})
 
 def create():

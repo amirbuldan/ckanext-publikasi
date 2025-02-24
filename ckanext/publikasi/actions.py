@@ -88,7 +88,14 @@ def get_all_publikasi(context, data_dict):
 
     return { "data": publikasi_obj }
 
+def get_all_publikasi_sektoral(context={}, data_dict={}):
+    ''' GET ALL PUBLIKASI SEKTORAL'''
+    publikasi_sektoral = Session.query(Publikasi).filter_by(type='Publikasi Sektoral').all()
+
+    return {'issuccess': True, "data" : _to_list_dict(publikasi_sektoral)}
+
 def get_all_publikasi_produk_hukum(context={}, data_dict={}):
+    ''' GET ALL PRODUK HUKUM '''
 
     produk_hukum = Session.query(Publikasi).filter_by(type='Produk Hukum').all()
     return {'issuccess': True, "data" : _to_list_dict(produk_hukum)}
