@@ -101,7 +101,13 @@ def get_all_publikasi_produk_hukum(context={}, data_dict={}):
     return {'issuccess': True, "data" : _to_list_dict(produk_hukum)}
 
 def publikasi_list(context={}, data_dict={}):
-    publikasi = Session.query(Publikasi).order_by(text(data_dict['sort'])).all()
+    publikasi_query = Session.query(Publikasi).order_by(text(data_dict['sort']))
+
+    if data_dict['limit'] != None:
+        publikasi_query = publikasi_query.limit(data_dict['limit'])
+
+    publikasi = publikasi_query.all()
+
 
     publikasi_obj = []
 

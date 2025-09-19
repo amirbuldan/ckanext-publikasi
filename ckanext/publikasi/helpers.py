@@ -32,10 +32,10 @@ def datetime_field_format(dt):
 def display_size_in_mb(byte_size):
     return f"{byte_size/(1<<20):,.0f} MB"
 
-def publikasi_list():
+def publikasi_list(limit=None):
     ''' Return newest publication '''
 
-    publikasi = toolkit.get_action('publikasi_list')(data_dict={'sort': 'created desc'})
+    publikasi = toolkit.get_action('publikasi_list')(data_dict={'sort': 'created desc', 'limit': limit})
 
     # print('publikasi list helper', publikasi)
     return publikasi
