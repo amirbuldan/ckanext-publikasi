@@ -23,6 +23,10 @@
         <p><i>Belum ada dokumen publikasi</i></p>
     {% endif %}
 
+    {% block page_pagination %}
+        {{ response['page'].pager() }}
+    {% endblock %}
+
 {% endblock %}
 
 {% block secondary_content %}

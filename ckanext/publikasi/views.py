@@ -1,4 +1,5 @@
 from flask import (Blueprint, render_template, jsonify, request, url_for)
+from ckan.lib.helpers import Page, pager_url
 import ckan.plugins.toolkit as tk
 
 PUBLIKASI_TYPE = ['publikasi sektoral', 'produk hukum']
@@ -18,9 +19,21 @@ def index():
 
     # if t not in PUBLIKASI_TYPE:
     #     return {'status': 'Not Found'}, 404
+    page_no = request.args.get('page', 1, type=int)
+    ITEMS_PER_PAGE = 8
+    # per_page = request.args.get('per_page', 10, type=int)
+    print(f"anda sekarang berada di halaman : {page_no}")
 
-    data_publikasi = tk.get_action('publikasi_sektoral_get_all')(context={}, data_dict={})
-    return render_template('publikasi/index.html', response={'data': data_publikasi['data']})
+    # data_publikasi = tk.get_action('publikasi_sektoral_get_all')(context={}, data_dict={})
+    data_publikasi = tk.get_action('publikasi_sektoral_page')(context={}, data_dict={'page_no': page_no, 'items_per_page': ITEMS_PER_PAGE})
+    page = Page(
+        collection=data_publikasi['items'],
+        page=page_no,
+        url=pager_url,
+        item_count=data_publikasi['item_count'],
+        items_per_page=ITEMS_PER_PAGE,
+    )
+    return render_template('publikasi/index.html', response={'data': data_publikasi['items'], 'page': page})
 
 def create():
     # if t not in PUBLIKASI_TYPE: 

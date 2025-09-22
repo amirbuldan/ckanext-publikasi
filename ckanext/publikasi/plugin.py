@@ -38,6 +38,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
             'publikasi_update': Actions.update_publikasi,
             'publikasi_delete': Actions.delete_publikasi,
             'publikasi_sektoral_get_all': Actions.get_all_publikasi_sektoral,
+            'publikasi_sektoral_page': Actions.page_publikasi_sektoral,
             'produk_hukum_get_all': Actions.get_all_publikasi_produk_hukum
         }
     

@@ -1,7 +1,7 @@
 import os, uuid, datetime
 import ckan.plugins.toolkit as tk
 from werkzeug.utils import secure_filename
-from sqlalchemy import text
+from sqlalchemy import text, select
 from ckan.model import Session
 from ckanext.publikasi.model import Publikasi
 
@@ -93,6 +93,18 @@ def get_all_publikasi_sektoral(context={}, data_dict={}):
     publikasi_sektoral = Session.query(Publikasi).filter_by(type='Publikasi Sektoral').all()
 
     return {'issuccess': True, "data" : _to_list_dict(publikasi_sektoral)}
+
+def page_publikasi_sektoral(context={}, data_dict={}):
+    page_no = data_dict['page_no']
+    items_per_page = data_dict['items_per_page']
+
+    # item_query = Session.query(Publikasi).limit(items_per_page).offset((page_no - 1)*items_per_page)
+
+    total_items = Session.query(Publikasi).count()
+
+    items = Session.query(Publikasi).limit(items_per_page).offset((page_no - 1)*items_per_page).all()
+
+    return {'issuccess': True, 'items': items, 'item_count': total_items}
 
 def get_all_publikasi_produk_hukum(context={}, data_dict={}):
     ''' GET ALL PRODUK HUKUM '''

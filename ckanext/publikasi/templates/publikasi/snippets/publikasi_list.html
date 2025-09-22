@@ -46,6 +46,11 @@ Example:
         </div>
         {% endfor %}
     {% endblock %}
+    {#
+  {% block page_pagination %}
+    {{ page.pager(q=q or '', sort=sort_by_selected or '') }}
+  {% endblock %}
+  #}
 </div>
     
 {% endblock %}
