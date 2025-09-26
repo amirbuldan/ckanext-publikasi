@@ -20,12 +20,16 @@ def index():
     # if t not in PUBLIKASI_TYPE:
     #     return {'status': 'Not Found'}, 404
     page_no = request.args.get('page', 1, type=int)
+    sortby = request.args.get('sort', 'id asc', type=str)
+    query = request.args.get('q', '', type=str)
+
     ITEMS_PER_PAGE = 8
     # per_page = request.args.get('per_page', 10, type=int)
     print(f"anda sekarang berada di halaman : {page_no}")
 
     # data_publikasi = tk.get_action('publikasi_sektoral_get_all')(context={}, data_dict={})
-    data_publikasi = tk.get_action('publikasi_sektoral_page')(context={}, data_dict={'page_no': page_no, 'items_per_page': ITEMS_PER_PAGE})
+    data_publikasi = tk.get_action('publikasi_sektoral_page')(context={}, \
+        data_dict={'page_no': page_no, 'items_per_page': ITEMS_PER_PAGE, 'sortby': sortby, 'query': query})
     page = Page(
         collection=data_publikasi['items'],
         page=page_no,
@@ -33,7 +37,7 @@ def index():
         item_count=data_publikasi['item_count'],
         items_per_page=ITEMS_PER_PAGE,
     )
-    return render_template('publikasi/index.html', response={'data': data_publikasi['items'], 'page': page})
+    return render_template('publikasi/index.html', response={'data': data_publikasi['items'], 'page': page}, q=query, sort_by_selected=sortby)
 
 def create():
     # if t not in PUBLIKASI_TYPE: 

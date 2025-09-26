@@ -16,6 +16,14 @@
 {% endblock %}
 
 {% block primary_content_inner %}
+    
+    {% set sorting = [
+        (_('Paling Lama ke Terbaru'), 'meta_release_date desc'),
+        (_('Terbaru ke Paling Lama'), 'meta_release_date asc'),
+        (_('A-Z (menaik)'), 'title asc'),
+        (_('A-Z (menurun)'), 'title desc') ]
+    %}
+    {% snippet 'snippets/search_form.html', type='Publication', query=q, sorting_selected=sort_by_selected, placeholder='Cari Publikasi', count=response['page'].item_count, sorting=sorting %}
 
     {% if response['data'] %}
         {{ h.snippet('publikasi/snippets/publikasi_list.html', data=response['data']) }}
@@ -24,7 +32,7 @@
     {% endif %}
 
     {% block page_pagination %}
-        {{ response['page'].pager() }}
+        {{ response['page'].pager(q=q) }}
     {% endblock %}
 
 {% endblock %}
