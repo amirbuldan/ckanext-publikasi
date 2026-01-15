@@ -50,6 +50,7 @@ class PublikasiPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return {
             'string_datetime': Helpers.string_datetime,
+            'to_wita_timezone': Helpers.to_wita_timezone,
             'datetime_field_format': Helpers.datetime_field_format,
             'display_size_in_mb': Helpers.display_size_in_mb,
             'get_latest_publikasi': Helpers.publikasi_list,

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import ckan.plugins.toolkit as toolkit
 
 READABLE_MONTH = [
@@ -15,6 +15,19 @@ READABLE_MONTH = [
     ('11', 'November'),
     ('12', 'Desember'),
 ]
+
+# timezone WITA
+WITA_TZ = timezone(timedelta(hours=8))
+
+
+def to_wita_timezone(dt):
+    # Langkah A: Beritahu Python bahwa data dari DB adalah UTC
+    # .replace(tzinfo=timezone.utc) menjadikan waktu 'aware'
+    utc_time = dt.replace(tzinfo=timezone.utc)
+    # Langkah B: Konversi ke offset GMT+8 (WITA)
+    wita_time = utc_time.astimezone(WITA_TZ)
+
+    return wita_time
 
 def string_datetime(dt):
 

@@ -9,6 +9,10 @@ BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'public/uploads'
 ALLOWED_EXTENSION = {'pdf'}
 
+# timezone
+WITA_TZ = datetime.timezone(datetime.timedelta(hours=8))
+
+
 def get_publikasi(context, data_dict):
     '''Retrieve metadata by ID'''
     publikasi_item = Session.query(Publikasi).filter_by(id=data_dict['id']).first()
@@ -107,7 +111,7 @@ def page_publikasi_sektoral(context={}, data_dict={}):
     print(f"cari column : {column_to_sort}")
     print(f"urutan column : {order_type}")
 
-    query = Session.query(Publikasi)
+    query = Session.query(Publikasi).filter_by(type="Publikasi Sektoral")
     if q != '':
         print(f"mencari publikasi dengan q: {q}")
         query = query.filter(Publikasi.title.ilike(f"%{q}%"))

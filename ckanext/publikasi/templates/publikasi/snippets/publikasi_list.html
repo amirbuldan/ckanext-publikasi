@@ -38,7 +38,7 @@ Example:
                         </h4>
                         <p>{{ h.markdown_extract(publikasi.description | truncate(150)) }}</p>
                         <small>
-                            <span class="glyphicon glyphicon-calendar"></span> {{ h.string_datetime(publikasi.created) }}
+                            <span class="glyphicon glyphicon-calendar"></span> {{ h.string_datetime(publikasi.meta_release_date) }}
                         </small>
                     </div>
                 </div> 

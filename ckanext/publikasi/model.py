@@ -9,6 +9,10 @@ import datetime
 # Initialize the base class for SQLAlchemy models
 Base = declarative_base(metadata=model.meta.metadata)
 
+# function untuk mengatur utc -> pengganti utcnow()
+def get_utc_now():
+    return datetime.datetime.now(datetime.timezone.utc)
+
 # Define the publikasi model
 class Publikasi(Base):
     __tablename__ = 'ckanext_publikasi'
@@ -29,8 +33,8 @@ class Publikasi(Base):
     meta_release_date = Column(DateTime, nullable=True)
     meta_language = Column(String, nullable=True)
     meta_file_size = Column(BigInteger, nullable=True)
-    created = Column(DateTime, default=datetime.datetime.now())
-    modified = Column(DateTime, nullable=True)
+    created = Column(DateTime, default=get_utc_now)
+    modified = Column(DateTime, nullable=True, default=get_utc_now, onupdate=get_utc_now)
 
     def __init__(self, unique_id, title, description=None, author=None, \
                 type=None, file_path=None, user_own=None, cover_image=None, \
