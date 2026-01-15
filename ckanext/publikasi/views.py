@@ -20,7 +20,7 @@ def index():
     # if t not in PUBLIKASI_TYPE:
     #     return {'status': 'Not Found'}, 404
     page_no = request.args.get('page', 1, type=int)
-    sortby = request.args.get('sort', 'id asc', type=str)
+    sortby = request.args.get('sort', 'meta_release_date desc', type=str)
     query = request.args.get('q', '', type=str)
 
     ITEMS_PER_PAGE = 8
