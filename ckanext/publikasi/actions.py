@@ -130,6 +130,39 @@ def page_publikasi_sektoral(context={}, data_dict={}):
 
     return {'issuccess': True, 'items': items, 'item_count': total_items}
 
+def page_publikasi_produk_hukum(context={}, data_dict={}):
+    page_no = data_dict['page_no']
+    items_per_page = data_dict['items_per_page']
+    sortby = data_dict['sortby']
+    q = data_dict['query']
+
+    # item_query = Session.query(Publikasi).limit(items_per_page).offset((page_no - 1)*items_per_page)
+
+    column_to_sort = getattr(Publikasi, sortby.split()[0])
+    order_type = sortby.split()[-1]
+    # print(f"cari column : {column_to_sort}")
+    # print(f"urutan column : {order_type}")
+
+    query = Session.query(Publikasi).filter_by(type="Produk Hukum")
+    if q != '':
+        # print(f"mencari produk hukum dengan q: {q}")
+        query = query.filter(Publikasi.title.ilike(f"%{q}%"))
+    if order_type == 'desc':
+        # print("melakukan sorting desc ..........")
+        query = query.order_by(column_to_sort.desc())
+    else :
+        query = query.order_by(column_to_sort)
+
+    total_items = query.count()
+
+    # query = Session.query(Publikasi).filter(Publikasi.title.ilike(f"%tes%")).order_by(Publikasi.title.desc())
+    items = query.limit(items_per_page).offset((page_no - 1)*items_per_page).all()
+
+    # items = Session.query(Publikasi).filter(Publikasi.title.ilike(query)) \
+    #     .limit(items_per_page).offset((page_no - 1)*items_per_page).all()
+
+    return {'issuccess': True, 'items': items, 'item_count': total_items}
+
 def get_all_publikasi_produk_hukum(context={}, data_dict={}):
     ''' GET ALL PRODUK HUKUM '''
 

@@ -1,4 +1,5 @@
 from flask import (Blueprint, render_template, jsonify, request, url_for)
+from ckan.lib.helpers import Page, pager_url
 import ckan.plugins.toolkit as tk
 
 bp = Blueprint(
@@ -8,9 +9,26 @@ bp = Blueprint(
 )
 
 def index():
-    data_publikasi = tk.get_action('produk_hukum_get_all')(context={}, data_dict={})
-    print(data_publikasi)
-    return render_template('produk_hukum/index.html', response={'data': data_publikasi['data']})
+
+    page_no = request.args.get('page', 1, type=int)
+    sortby = request.args.get('sort', 'meta_release_date desc', type=str)
+    query = request.args.get('q', '', type=str)
+
+    ITEMS_PER_PAGE = 8
+    # per_page = request.args.get('per_page', 10, type=int)
+    
+    # print(f"anda sekarang berada di halaman : {page_no}")
+
+    data_publikasi = tk.get_action('publikasi_produk_hukum_page')(context={}, \
+        data_dict={'page_no': page_no, 'items_per_page': ITEMS_PER_PAGE, 'sortby': sortby, 'query': query})
+    page = Page(
+        collection=data_publikasi['items'],
+        page=page_no,
+        url=pager_url,
+        item_count=data_publikasi['item_count'],
+        items_per_page=ITEMS_PER_PAGE,
+    )
+    return render_template('produk_hukum/index.html', response={'data': data_publikasi['items'], 'page': page}, q=query, sort_by_selected=sortby)
 
 def create():
     PUBLIKASI_TYPE = 'produk_hukum'
